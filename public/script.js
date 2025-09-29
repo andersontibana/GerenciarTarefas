@@ -83,3 +83,28 @@ async function removerTarefa(id) {
     alert("Erro ao remover tarefa!");
   }
 }
+
+//Função para editar tarefa (opcional)
+async function editarTarefa(id) {
+  const novaTarefa = prompt("Digite a nova tarefa:");
+  if (!novaTarefa) return;
+
+  try {
+    const response = await fetch(`/tarefas/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ tarefa: novaTarefa }),
+    });
+
+    if (response.ok) {
+      carregarTarefas(); // Recarregar a lista
+    } else {
+      alert("Erro ao editar tarefa!");
+    }
+  } catch (error) {
+    console.error("Erro ao editar tarefa:", error);
+    alert("Erro ao editar tarefa!");
+  }
+}
