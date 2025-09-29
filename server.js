@@ -19,15 +19,15 @@ let id = tarefas.length;
 // Middleware para parsing JSON
 app.use(express.json());
 
-// Middleware para CORS
-app.use(cors());
-
 // Middleware para servir arquivos estáticos
 app.use(express.static("public"));
 
+// Middleware para CORS
+app.use(cors());
+
 // Rota para a página inicial
 app.get("/", (req, res) => {
-  res.sendFile(path.join(path.resolve(), "public", "index.html"));
+  res.sendFile(path.join(path.resolve("public", "index.html")));
 });
 
 // Função para ler tarefas do arquivo
@@ -43,41 +43,52 @@ app.get("/tarefas", async (req, res) => {
 
 // GET - Buscar tarefa por id
 app.get("/tarefas/:id", (req, res) => {
-  const id = Number(req.params.id);
-  if (!id) {
-    return res.status(400).json({ message: "Id inválido" });
+  try {
+    const id = Number(req.params.id);
+    if (!id) {
+      return res.status(400).json({ message: "Id inválido" });
+    }
+    const tarefa = tarefas.find((t) => t.id === id);
+    if (!tarefa) {
+      return res.status(404).json({ erro: "Tarefa não encontrada" });
+    }
+    res.json(tarefa);
+  } catch (error) {
+    res.status(500).json({ erro: "Erro interno de servidor" });
   }
-  const tarefa = tarefas.find((t) => t.id === id);
-  if (!tarefa) {
-    return res.status(404).json({ erro: "Tarefa não encontrada" });
-  }
-  res.json(tarefa);
 });
 
 // POST - Criar nova tarefa
 app.post("/tarefas", (req, res) => {
-  const { tarefa } = req.body;
-  id++;
-  const novaTarefa = { id: id, tarefa: tarefa };
-  tarefas.push(novaTarefa);
-  res
-    .status(201)
-    .json({ message: "Tarefa adicionada com sucesso!", tarefa: novaTarefa });
+  try {
+    const { tarefa } = req.body;
+    id++;
+    const novaTarefa = { id: id, tarefa: tarefa };
+    tarefas.push(novaTarefa);
+    res
+      .status(201)
+      .json({ message: "Tarefa adicionada com sucesso!", tarefa: novaTarefa });
+  } catch (error) {
+    res.status(500).json({ erro: "Erro interno do servidor" });
+  }
 });
 
 //excluir tarefa
 app.delete("/tarefas/:id", (req, res) => {
-  const id = Number(req.params.id);
-  if (!id) {
-    res.status(400).json({ message: "Id inválido" });
+  try {
+    const id = Number(req.params.id);
+    if (!id) {
+      res.status(400).json({ message: "Id inválido" });
+    }
+    const tarefa = tarefas.findIndex((t) => t.id === id);
+    if (tarefa === -1) {
+      return res.status(404).json({ erro: "Tarefa não encontrada" });
+    }
+    tarefas.splice(tarefa, 1);
+    res.status(200).json({ message: "Tarefa removida com sucesso" });
+  } catch (error) {
+    res.status(500).json({ erro: "Erro interno do servidor" });
   }
-  const tarefa = tarefas.findIndex((t) => t.id === id);
-  if (tarefa === -1) {
-    return res.status(404).json({ erro: "Tarefa não encontrada" });
-  }
-  console.log(tarefa);
-  tarefas.splice(tarefa, 1);
-  res.status(200).json({ message: "Tarefa removida com sucesso" });
 });
 
 // PUT - Atualizar tarefa
