@@ -1,0 +1,23 @@
+{
+  "name": "lista-nomes",
+  "version": "1.0.0",
+  "description": "Aplicação simples para gerenciar lista de nomes",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "nodemon": "^3.1.10"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "html"
+  ],
+  "author": "",
+  "license": "MIT"
+}

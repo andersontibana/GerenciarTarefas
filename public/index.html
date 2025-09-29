@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Tarefas</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Lista de tarefas</h1>
+      <div class="form-container">
+        <label for="nomeInput">Tarefa:</label>
+        <div class="input-group">
+          <input type="text" id="nomeInput" placeholder="Digite uma tarefa" />
+          <button id="salvarBtn">Salvar</button>
+        </div>
+      </div>
+      <div class="lista-container">
+        <h2>Tarefas cadastradas</h2>
+        <ul id="listaNomes"></ul>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
